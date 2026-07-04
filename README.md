@@ -1,73 +1,237 @@
-# 📦 Sistema Profesional de Gestión de Inventario & Kárdex Contable
+# Sistema de Gestión de Inventario y Kárdex Contable
 
-Un software de escritorio de alta gama, moderno e intuitivo, desarrollado en **Python** con **CustomTkinter** y **SQLite**. Diseñado para operar de manera local en una sola computadora de forma rápida, eficiente y completamente segura.
-
-## ✨ Características Principales
-
-*   **🔒 Seguridad Avanzada**: Módulo impenetrable de control de acceso. Las contraseñas se protegen mediante hashes criptográficos **SHA-256** de carácter irreversible.
-*   **👁️ Cifrado Oculto de Datos**: Los archivos de base de datos se almacenan de forma invisible en el directorio del sistema operativo (`%AppData%`). Campos sensibles como los comentarios están cifrados localmente mediante el algoritmo **Fernet (AES de 128 bytes)**.
-*   **📈 Kárdex Contable Automatizado**: Monitoreo analítico de stock en tiempo real. Diferenciación estricta entre **Costo de Adquisición Unitario** (Entradas de inversión) y **Precio Pactado** (Salidas de ganancias).
-*   **🚨 Alertas Visuales Dinámicas**: El sistema resalta de manera automática e inmediata en color rojo los productos cuyo stock actual sea igual o inferior a su límite mínimo configurado.
-*   **📊 Reportes Maestros de un Solo Clic**: Generación automatizada de un libro contable estilizado en Microsoft Excel corporativo, con autoajuste de columnas y fórmulas de sumatorias de saldos integradas nativamente.
-*   **🗑️ Gestión de Errores Operativos**: Botón de eliminación en cascada (`ON DELETE CASCADE`) que limpia la bitácora financiera si inyectaste mal un producto, manteniendo el balance matemático del Excel perfecto.
-*   **🖥️ Interfaz Optimizada**: Diseño responsive adaptado a pantalla completa que respeta el modo oscuro/claro nativo del sistema operativo del usuario.
+Una aplicación de escritorio para administrar inventarios, controlar ventas y llevar un kárdex contable automatizado. Está desarrollada en **Python** con **CustomTkinter** y usa **SQLite** como base de datos local. Funciona enteramente en una sola computadora, sin necesidad de conexión a internet ni servidores externos.
 
 ---
 
-## 📂 Estructura del Proyecto
+## ¿Qué hace este programa?
+
+- **Control de inventario** — Podés dar de alta productos, actualizar cantidades, precios y stock mínimo. La tabla principal te muestra en tiempo real el estado de tu inventario.
+- **Alertas visuales de stock bajo** — Cuando un producto llega a su límite mínimo, el sistema lo marca automáticamente en rojo para que lo veas de un vistazo.
+- **Registro de ventas** — Seleccionás un producto, indicás cantidad y precio pactado, y el sistema descuenta del stock automáticamente. Cada venta queda registrada en una bitácora de operaciones.
+- **Kárdex contable automatizado** — Cada movimiento (alta, modificación, venta) se registra con fecha, tipo y descripción. Esa información se puede exportar a Excel con fórmulas y sumatorias incluidas.
+- **Exportación a Excel** — Con un clic generás un libro contable con dos hojas: una con el historial completo de movimientos y otra con el inventario disponible actual.
+- **Seguridad básica** — Las contraseñas se guardan con SHA-256 (irreversible). Los detalles de los productos se cifran con Fernet (AES) usando una clave derivada del usuario del sistema.
+- **Cambio de credenciales** — Podés cambiar el usuario y la contraseña desde la misma interfaz, siempre que ingreses la contraseña actual.
+
+---
+
+## Estructura del proyecto
 
 ```text
 inventory-control-system/
 │
 ├── src/
-│   ├── main.py                  # Punto de arranque y control de pantallas
+│   ├── main.py                  # Arranque de la aplicación, control de pantallas
 │   ├── database/
-│   │   ├── conexion.py          # Enrutamiento oculto en %AppData%
-│   │   └── tablas.py            # Esquemas relacionales y Triggers de SQL
+│   │   ├── conexion.py          # Conexión a SQLite (la base se guarda en %AppData%)
+│   │   └── tablas.py            # Creación de tablas y triggers SQL
 │   ├── views/
-│   │   ├── login_view.py        # Control de acceso seguro
-│   │   ├── dashboard_view.py    # Navegación del menú lateral
-│   │   ├── inventario_view.py   # Formulario e inyección de activos
-│   │   ├── ventas_view.py       # Menú desplegable dinámico y cobros
-│   │   └── config_view.py       # Cambio auditor de credenciales
+│   │   ├── login_view.py        # Pantalla de inicio de sesión
+│   │   ├── dashboard_view.py    # Menú lateral con las secciones principales
+│   │   ├── inventario_view.py   # CRUD de productos y tabla de monitoreo
+│   │   ├── ventas_view.py       # Registro de ventas e historial de movimientos
+│   │   └── config_view.py       # Cambio de usuario y contraseña
 │   └── utils/
-│       ├── seguridad.py         # Motores criptográficos (SHA-256 / Fernet)
-│       └── excel_exporter.py    # Compilador y formateador de Libro Contable
+│       ├── seguridad.py         # Hash SHA-256 y cifrado Fernet (AES)
+│       └── excel_exporter.py    # Generación del libro contable en Excel
 │
-├── requirements.txt             # Dependencias del sistema
-└── README.md                    # Documentación técnica
+├── requirements.txt             # Librerías necesarias para ejecutar el proyecto
+└── README.md                    # Este archivo
 ```
 
 ---
 
-## 🚀 Instalación y Despliegue en Desarrollo
+## Cómo instalarlo y ejecutarlo
 
-1. **Clonar o descargar** este repositorio en tu directorio local de programación.
-2. Abrir una terminal de comandos (PowerShell) en la carpeta raíz del proyecto e instalar las dependencias con un comando único:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Ejecutar la aplicación en entorno interactivo:
-   ```bash
-   python src/main.py
-   ```
+### 1. Cloná el repositorio
 
-### 🗝️ Credenciales de Acceso por Defecto
-Al iniciar por primera vez, el sistema inyectará la cuenta de administración maestra:
-*   **Usuario**: `admin`
-*   **Contraseña**: `admin123`
-*(Puedes modificarlas de forma segura en cualquier momento desde la pestaña "Seguridad / Claves")*.
+```bash
+git clone https://github.com/RmedranoCh/Inventory-Control-System.git
+cd Inventory-Control-System
+```
+
+### 2. Instalá las dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Ejecutá la aplicación
+
+```bash
+python src/main.py
+```
 
 ---
 
-## 📦 Compilación a Botón de Arranque Directo (`.exe`)
+### Credenciales por defecto
 
-Para compilar todo el proyecto en un único archivo ejecutable independiente que abra directamente con doble clic sin necesidad de instalar librerías adicionales, ejecuta el siguiente comando:
+La primera vez que se ejecuta el programa, se crea automáticamente un usuario administrador con estos datos:
+
+- **Usuario:** `admin`
+- **Contraseña:** `admin123`
+
+Podés cambiarlos después desde la sección **Seguridad / Claves** del menú lateral.
+
+---
+
+## Cómo compilarlo a un `.exe`
+
+Si querés generar un ejecutable independiente para distribuir o usar sin instalar Python:
 
 ```bash
 pyinstaller --clean --noconsole --onefile src/main.py
 ```
 
-### 🎯 Resultados del Empaquetado:
-*   El archivo compilado definitivo llamado `main.exe` aparecerá dentro de la carpeta **`dist/`**.
-*   Puedes cambiarle el nombre a `SistemaContable.exe`, moverlo al Escritorio y borrar las carpetas temporales sobrantes (`build/` y `main.spec`).
+Esto crea un archivo `main.exe` dentro de la carpeta `dist/`. Podés renombrarlo como quieras (ej. `SistemaContable.exe`) y moverlo al Escritorio. Las carpetas `build/` y el archivo `main.spec` se pueden eliminar después de la compilación.
+
+---
+
+## Detalles técnicos
+
+| Aspecto | Descripción |
+|---|---|
+| **Lenguaje** | Python 3 |
+| **Interfaz gráfica** | CustomTkinter (tema oscuro/claro según el sistema) |
+| **Base de datos** | SQLite, guardada en `%AppData%\.sistema_inventario_pro\secure_data.db` |
+| **Hash de contraseñas** | SHA-256 |
+| **Cifrado de datos sensibles** | Fernet (AES), clave derivada del nombre de usuario del SO |
+| **Exportación** | openpyxl — genera un archivo .xlsx con dos hojas |
+| **Triggers SQL** | 3 disparadores que registran automáticamente creación, modificación y venta de productos en el historial |
+
+### Tablas de la base de datos
+
+- **usuarios** — Almacena usuario y contraseña con hash.
+- **productos** — Cada producto con nombre único, cantidad, precio de costo, stock mínimo y detalles cifrados.
+- **ventas** — Registro de cada venta con producto, cantidad, precio, total, fecha y notas.
+- **historial_movimientos** — Bitácora donde los triggers insertan automáticamente cada operación.
+
+### Triggers
+
+- `log_nuevo_producto` — Se activa al insertar un producto.
+- `log_actualizacion_producto` — Se activa al modificar cantidad o precio; si el stock queda en o por debajo del mínimo, marca el evento como "BAJO STOCK".
+- `log_nueva_venta` — Se activa al registrar una venta.
+
+Tanto ventas como historial usan `ON DELETE CASCADE`, así que si eliminás un producto, sus registros asociados se borran automáticamente para mantener la consistencia.
+
+---
+
+---
+
+# Inventory Management & Accounting Kardex System
+
+A desktop application to manage inventory, control sales, and keep an automated accounting kardex. Built with **Python** using **CustomTkinter** and **SQLite** as the local database. It runs entirely on a single computer with no internet connection or external servers required.
+
+---
+
+## What this program does
+
+- **Inventory control** — Add products, update quantities, prices, and minimum stock. The main table shows your inventory in real time.
+- **Low stock visual alerts** — When a product reaches its minimum limit, the system automatically highlights it in red so you can spot it at a glance.
+- **Sales registration** — Pick a product, enter the quantity and agreed price, and the system deducts from stock automatically. Every sale is recorded in an operations log.
+- **Automated accounting kardex** — Every movement (creation, update, sale) is logged with date, type, and description. This data can be exported to Excel with built-in formulas and totals.
+- **Excel export** — One click generates an accounting workbook with two sheets: a full movement history and the current available inventory.
+- **Basic security** — Passwords are stored using SHA-256 (one-way hash). Product details are encrypted with Fernet (AES) using a key derived from the system username.
+- **Credential change** — You can change the username and password from the interface itself, as long as you provide the current password.
+
+---
+
+## Project structure
+
+```text
+inventory-control-system/
+│
+├── src/
+│   ├── main.py                  # Application entry point, screen control
+│   ├── database/
+│   │   ├── conexion.py          # SQLite connection (database stored in %AppData%)
+│   │   └── tablas.py            # Table creation and SQL triggers
+│   ├── views/
+│   │   ├── login_view.py        # Login screen
+│   │   ├── dashboard_view.py    # Sidebar menu with main sections
+│   │   ├── inventario_view.py   # Product CRUD and monitoring table
+│   │   ├── ventas_view.py       # Sales registration and movement history
+│   │   └── config_view.py       # Username and password change
+│   └── utils/
+│       ├── seguridad.py         # SHA-256 hashing and Fernet (AES) encryption
+│       └── excel_exporter.py    # Excel accounting workbook generation
+│
+├── requirements.txt             # Required libraries
+└── README.md                    # This file
+```
+
+---
+
+## Installation and execution
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/RmedranoCh/Inventory-Control-System.git
+cd Inventory-Control-System
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the application
+
+```bash
+python src/main.py
+```
+
+---
+
+### Default credentials
+
+The first time the program runs, an admin user is created automatically with:
+
+- **Username:** `admin`
+- **Password:** `admin123`
+
+You can change these later from the **Security / Keys** section in the sidebar menu.
+
+---
+
+## How to compile to a `.exe`
+
+If you want a standalone executable to distribute or use without installing Python:
+
+```bash
+pyinstaller --clean --noconsole --onefile src/main.py
+```
+
+This creates a `main.exe` file inside the `dist/` folder. You can rename it (e.g., `SistemaContable.exe`) and move it to your Desktop. The `build/` folder and `main.spec` file can be deleted after compilation.
+
+---
+
+## Technical details
+
+| Aspect | Description |
+|---|---|
+| **Language** | Python 3 |
+| **GUI framework** | CustomTkinter (dark/light theme follows system settings) |
+| **Database** | SQLite, stored at `%AppData%\.sistema_inventario_pro\secure_data.db` |
+| **Password hashing** | SHA-256 |
+| **Sensitive data encryption** | Fernet (AES), key derived from the OS username |
+| **Export** | openpyxl — generates a .xlsx file with two sheets |
+| **SQL triggers** | 3 triggers that automatically log creation, modification, and sale of products |
+
+### Database tables
+
+- **usuarios** — Stores username and hashed password.
+- **productos** — Each product with a unique name, quantity, cost price, minimum stock, and encrypted details.
+- **ventas** — Records each sale with product, quantity, price, total, date, and notes.
+- **historial_movimientos** — Log where triggers automatically insert every operation.
+
+### Triggers
+
+- `log_nuevo_producto` — Fires on product insert.
+- `log_actualizacion_producto` — Fires on quantity or price update; if stock drops to or below the minimum, it marks the event as "BAJO STOCK" (LOW STOCK).
+- `log_nueva_venta` — Fires on sale registration.
+
+Both sales and history use `ON DELETE CASCADE`, so when you delete a product, its related records are removed automatically to maintain consistency.
